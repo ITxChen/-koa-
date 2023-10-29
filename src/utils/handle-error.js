@@ -18,6 +18,9 @@ app.on("error", (error, ctx) => {
     case "unauthorization":
       code = -1005;
       message = "无效的token或token已经失效";
+    case "operation_is_no_allowed":
+      code = -1006;
+      message = "没有权限修改";
   }
 
   ctx.body = { code, message };

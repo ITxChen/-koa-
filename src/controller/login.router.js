@@ -7,15 +7,10 @@ class LoginController {
       expiresIn: 24 * 60 * 60,
       algorithm: "RS256",
     });
-    console.log(token);
     ctx.body = {
       code: 0,
       data: { id, name, token },
     };
-  }
-
-  test(ctx, next) {
-    ctx.body = "验证身份通过";
   }
 }
 
