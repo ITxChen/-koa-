@@ -1,5 +1,4 @@
 const connection = require("../app/database");
-const md5Password = require("./md5-password");
 class UserService {
   // 创建用户
   async create(user) {
@@ -18,6 +17,5 @@ class UserService {
     const [values] = await connection.execute(statement, [name]);
     return values;
   }
-
 }
 module.exports = new UserService();
