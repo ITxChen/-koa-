@@ -8,7 +8,8 @@ class MomentService {
   async getList(offset, size) {
     const statement = `SELECT 
     m.id id, m.content content ,m.createAt createAt ,
-    JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user 
+    JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user ,
+    (SELECT COUNT(*) FROM comment WHERE comment.moment_id = m.id ) CountNum
     FROM moment m 
     LEFT JOIN users u ON u.id = m.user_id
     LIMIT ? OFFSET ?`;
@@ -22,10 +23,17 @@ class MomentService {
   async detail(momentId) {
     const statement = `SELECT 
     m.id id, m.content content ,m.createAt createAt ,
-    JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user 
+    JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user ,
+		(JSON_ARRAYAGG(
+      JSON_OBJECT(
+        'id',c.id,'content',c.content,'commentId',c.comment_id
+        ))) comments
     FROM moment m 
     LEFT JOIN users u ON u.id = m.user_id
-    WHERE m.id=?`;
+		LEFT JOIN comment c ON c.moment_id = m.id
+    WHERE m.id=?
+		GROUP BY m.id`;
+
     const [result] = await connection.execute(statement, [momentId]);
     // console.log(result);
     return result;
