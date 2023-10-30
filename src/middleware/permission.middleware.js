@@ -16,7 +16,6 @@ const verifytPermission = async (ctx, next) => {
   const keyName = Object.keys(ctx.params)[0];
   const resourceId = ctx.params[keyName];
   const resourceName = keyName.replace("Id", "");
-
   const isPermission = await permissionService.checkResouce(
     resourceName,
     resourceId,

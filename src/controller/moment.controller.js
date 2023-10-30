@@ -54,5 +54,29 @@ class MomentController {
       data: result,
     };
   }
+  //  为表多对多进行添加处理
+  async addLabels(ctx, next) {
+    // 获取参数
+    const { labels } = ctx;
+    const { momentId } = ctx.params;
+    // 将moment_id 和label_id添加到moment_label关系表
+    try {
+      for (const label of labels) {
+        // 判断label_id和moment_id已经存在数据
+        const isExists = await MomentService.hasLabel(momentId, label.id);
+        // console.log(!isExists);
+        if (isExists) {
+          // 不存在，就存入关系表
+          const result = await MomentService.addLabel(momentId, label.id);
+        }
+      }
+      ctx.body = {
+        code: 0,
+        message: "数据关联成功",
+      };
+    } catch (error) {
+      console.log("有错误:error", error);
+    }
+  }
 }
 module.exports = new MomentController();
