@@ -9,7 +9,8 @@ class MomentService {
     const statement = `SELECT 
     m.id id, m.content content ,m.createAt createAt ,
     JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user ,
-    (SELECT COUNT(*) FROM comment WHERE comment.moment_id = m.id ) CountNum
+    (SELECT COUNT(*) FROM comment WHERE comment.moment_id = m.id ) CountNum,
+    (SELECT COUNT(*) FROM moment_label ml WHERE ml.moment_id = m.id ) LabelNum
     FROM moment m 
     LEFT JOIN users u ON u.id = m.user_id
     LIMIT ? OFFSET ?`;
@@ -24,14 +25,32 @@ class MomentService {
     const statement = `SELECT 
     m.id id, m.content content ,m.createAt createAt ,
     JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user ,
-		(JSON_ARRAYAGG(
-      JSON_OBJECT(
-        'id',c.id,'content',c.content,'commentId',c.comment_id
-        ))) comments
+   	(
+				SELECT
+					JSON_ARRAYAGG(
+						JSON_OBJECT(
+						'id',c.id,'content',c.content,'commentId',c.comment_id,
+						'user',JSON_OBJECT('id',cu.id,'name',cu.name)
+				)) 
+				FROM comment c
+				LEFT JOIN users cu ON cu.id = c.user_id
+				WHERE c.moment_id = m.id
+		)comments,
+		
+		(
+			JSON_ARRAYAGG(JSON_OBJECT('id',l.id,'name',l.name))
+		) labels,
+		
+		(SELECT COUNT(*) FROM comment WHERE comment.moment_id = m.id ) CountNum
+		
     FROM moment m 
     LEFT JOIN users u ON u.id = m.user_id
-		LEFT JOIN comment c ON c.moment_id = m.id
-    WHERE m.id=?
+
+		
+		LEFT JOIN  moment_label ml on ml.moment_id = m.id
+		LEFT JOIN  label l ON ml.label_id = l.id
+		
+    WHERE m.id= ?
 		GROUP BY m.id`;
 
     const [result] = await connection.execute(statement, [momentId]);
