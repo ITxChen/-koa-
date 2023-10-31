@@ -7,5 +7,6 @@ function registerRouters(app) {
     app.use(router.routes());
     app.use(router.allowedMethods());
   }
+
 }
 module.exports = registerRouters;
