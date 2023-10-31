@@ -10,9 +10,10 @@ class CommentService {
     ]);
     return result;
   }
-  async reply(content, momentId, commentId, userId) {
+  async reply(content, momentId, userId, commentId) {
     const statement =
       "INSERT INTO comment (content,moment_id,user_id,comment_id) VALUES (?, ?, ?,?);";
+    console.log(content, momentId, userId, commentId);
     const [result] = await connection.execute(statement, [
       content,
       momentId,

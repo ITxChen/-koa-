@@ -8,7 +8,7 @@ class MomentService {
   async getList(offset, size) {
     const statement = `SELECT 
     m.id id, m.content content ,m.createAt createAt ,
-    JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user ,
+    JSON_OBJECT('id',u.id,'name',u.name,'avatar_url',u.avatar_url,'createAt',u.createAt) user ,
     (SELECT COUNT(*) FROM comment WHERE comment.moment_id = m.id ) CountNum,
     (SELECT COUNT(*) FROM moment_label ml WHERE ml.moment_id = m.id ) LabelNum
     FROM moment m 
@@ -24,7 +24,7 @@ class MomentService {
   async detail(momentId) {
     const statement = `SELECT 
     m.id id, m.content content ,m.createAt createAt ,
-    JSON_OBJECT('id',u.id,'name',u.name,'createAt',u.createAt) user ,
+    JSON_OBJECT('id',u.id,'name',u.name,'avatar_url',u.avatar_url,'createAt',u.createAt) user ,
    	(
 				SELECT
 					JSON_ARRAYAGG(

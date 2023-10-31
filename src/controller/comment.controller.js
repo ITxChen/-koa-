@@ -12,7 +12,7 @@ class CommentController {
     };
   }
   async reply(ctx, next) {
-    const { content, commentId, momentId } = ctx.request.body;
+    const { content, momentId, commentId } = ctx.request.body;
     const { id } = ctx.user;
     const result = await CommentService.reply(content, momentId, id, commentId);
     ctx.body = {
