@@ -2,14 +2,14 @@ const jwt = require("jsonwebtoken");
 const { PRIVATE_KEY, PUBLIC_KEY } = require("../keys/screct");
 class LoginController {
   async sign(ctx, next) {
-    const { id, name } = ctx.user;
-    const token = jwt.sign({ id, name }, PRIVATE_KEY, {
-      expiresIn: 24 * 60 * 60,
-      algorithm: "RS256",
+    const { name, passwd, type } = ctx.user;
+    const token = jwt.sign({ name, passwd }, PRIVATE_KEY, {
+      expiresIn: 24 * 60 * 60, //24小时
+      algorithm: "RS256", //加密方法
     });
     ctx.body = {
-      code: 0,
-      data: { id, name, token },
+      code: 200,
+      data: { name, passwd, type, token },
     };
   }
 }
