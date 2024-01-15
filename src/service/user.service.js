@@ -24,11 +24,11 @@ class UserService {
     const [values] = await connection.execute(statement, [name]);
     return values;
   }
-  //  创建头像
-  async updateUserAvatar(avatarUrl, userId) {
-    const statement = `UPDATE users SET avatar_url = ? WHERE id = ?;`;
-    const [result] = await connection.execute(statement, [avatarUrl, userId]);
-    console.log(result);
+  //  创建/更新头像
+  async updateUserAvatar(avatarUrl, uid) {
+    const statement = `UPDATE students SET avatarUrl = ? WHERE id = ?;`;
+    const [result] = await connection.execute(statement, [avatarUrl, uid]);
+    console.log("result", result);
     return result;
   }
 }

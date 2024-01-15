@@ -1,8 +1,10 @@
+const scheduleService = require("../service/schedule.service");
 class scheduleController {
   async getList(ctx, next) {
     try {
-      const term = ctx.request.body;
-      const res = await scheduleService.getList(term);
+      const { class_id, term } = ctx.request.body;
+
+      const res = await scheduleService.getList({ class_id, term });
       if (res) {
         ctx.body = {
           message: "获取课表成功",
@@ -18,3 +20,4 @@ class scheduleController {
     } catch (error) {}
   }
 }
+module.exports = new scheduleController();

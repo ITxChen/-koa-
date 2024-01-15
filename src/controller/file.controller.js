@@ -5,24 +5,26 @@ const userService = require("../service/user.service");
 const { SERVER, SERVER_POST } = require("../config/server");
 class fileController {
   async creat(ctx, next) {
+    // console.log(ctx.request.file);
     // 1.获取上传文件的信息
     const { filename, mimetype, size } = ctx.request.file;
-    const { id } = ctx.user;
-    // 2.存储到数据库
-    const result = await fileService.create(filename, mimetype, size, id);
-    // 3.将头像url保存到users中
-    const avatarUrl = `${SERVER}:${SERVER_POST}/file/avatar/${id}`;
-    const data = await userService.updateUserAvatar(avatarUrl, id);
+    const uid = ctx.query.uid;
+    // 2.将图片的信息存储到数据库
+    const result = await fileService.create(filename, mimetype, size, uid);
+    // 3.将头像url保存起来
+    const avatarUrl = `${SERVER}:${SERVER_POST}/file/avatar/${uid}`;
+    //4.更新头像
+    const data = await userService.updateUserAvatar(avatarUrl, uid);
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "上传成功",
-      data: avatarUrl,
+      data: data,
     };
   }
   async showAvatarImage(ctx, next) {
-    const { userId } = ctx.params;
+    const { uid } = ctx.params;
     // 获取头像的信息
-    const avatarInfo = await fileService.queryAvatarWithUserId(userId);
+    const avatarInfo = await fileService.queryAvatarWithUserId(uid);
     if (!avatarInfo) {
       ctx.body = {
         code: -1008,

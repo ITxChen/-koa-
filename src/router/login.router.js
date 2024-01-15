@@ -7,3 +7,4 @@ const loginRouter = new KoaRouter({ prefix: "/login" });
 loginRouter.post("/", verifyLogin, LoginController.sign);
 
 module.exports = loginRouter;
+// 登录接口

@@ -6,5 +6,5 @@ const handleAvatar = require("../middleware/file.middleware");
 const fileRouter = new KoaRouter({ prefix: "/file" });
 
 fileRouter.post("/", verifyAuth, handleAvatar, creat);
-fileRouter.get("/avatar/:userId", showAvatarImage);
+fileRouter.get("/avatar/:uid", showAvatarImage);
 module.exports = fileRouter;

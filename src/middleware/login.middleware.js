@@ -22,7 +22,6 @@ const verifyLogin = async (ctx, next) => {
   } else {
     // 将user保存到ctx中，ctx共享
     ctx.user = user;
-    // console.log(ctx.user);
     console.log("登录成功");
     await next();
   }
@@ -30,12 +29,11 @@ const verifyLogin = async (ctx, next) => {
 // 验证token
 const verifyAuth = async (ctx, next) => {
   console.log("开始鉴权");
-  // console.log(ctx.header.Authorization);
   const authorization = ctx.header.authorization;
-  if (!authorization) {
-    return ctx.app.emit("error", "unauthorization", ctx);
-  }
-  const token = authorization.replace("Bearer", "");
+  // if (!authorization) {
+  //   return ctx.app.emit("error", "unauthorization", ctx);
+  // }
+  const token = authorization.replace("Bearer ", "");
   try {
     const result = jwt.verify(token, PUBLIC_KEY, {
       algorithms: ["RS256"],
