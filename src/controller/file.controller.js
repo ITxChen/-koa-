@@ -4,7 +4,7 @@ const UPLAOD_PATH = require("../config/path");
 const userService = require("../service/user.service");
 const { SERVER, SERVER_POST } = require("../config/server");
 class fileController {
-  async creat(ctx, next) {
+  async   creat(ctx, next) {
     // console.log(ctx.request.file);
     // 1.获取上传文件的信息
     const { filename, mimetype, size } = ctx.request.file;

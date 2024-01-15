@@ -13,6 +13,21 @@ class UserController {
       data: result,
     };
   }
+  // 修改密码
+  async modifyPasswd(ctx, next) {
+    // 获取表单信息
+    const userinfo = ctx.request.body;
+    console.log("userinfo", userinfo);
+    // 先去student表验证信息是否正确
+    const result = await UserService.modifyPasswd(userinfo);
+    console.log("result", result);
+    if (result) {
+      ctx.body = {
+        code: 200,
+        message: "密码修改成功",
+      };
+    }
+  }
 }
 
 module.exports = new UserController();

@@ -18,6 +18,8 @@ const verifyLogin = async (ctx, next) => {
   }
   //  判断密码是否正确
   if (user.passwd !== md5Password(passwd)) {
+    console.log(user.passwd);
+    console.log(md5Password(passwd));
     return ctx.app.emit("error", "passwrod_is_incorrect", ctx);
   } else {
     // 将user保存到ctx中，ctx共享
